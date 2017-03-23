@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>NerdBook</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <header>
+            <h3>Navigazione</h3>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="descrizione.html">Descrizione</a>
+                    </li>
+                    <li>
+                        <a href="profilo.html">Profilo</a>
+                    </li>
+                </ul>
+            </nav>  
+        </header>
+        <div>
+            <h3>Inserisci i tuoi dati:</h3>
+            <form action="#" method="POST">
+                <ul>
+                    <li>
+                        nome: <input type="text" name="nome">
+                    </li>
+                    <li>
+                        cognome:<input type="text" name="cognome">
+                    </li>
+                    <li>
+                         URL immagine di profilo <input type="url" name="URL">
+                    </li>
+                    <li>
+                        Data di nascita <input type="data" name="Dnascita">
+                    </li>
+                    <li>
+                        Password: <input type="password" name="psw">
+                    </li>
+                    <li>
+                         Conferma password: <input type="password" name="ConfermaPsw">
+                    </li>
+                </ul>
+            </form>
+        </div>
     </body>
 </html>
