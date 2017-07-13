@@ -365,42 +365,11 @@ input:focus, textarea:focus
     float: left; 
 }
 
-#divLogout
+#navDescr #logout
 {
-    position: absolute;
-    right: 0px;
-    top: 0px;
+    float:right;
+    margin-right: 15px;
 }
-
-#divLogout img
-{
-    width: 20px;
-    height: 20px;
-    position: relative;
-    right: 50px;
-    top: 25px;
-}
-#divLogout h3::before
-{
-    content: url(Img/user2.png);
-    position: relative;
-    right: 5px;
-}
-
-#divLogout h3
-{
-    position: relative;
-    top: 20px;
-    right: 20px;
-}
-
-#divLogout a
-{
-    position: relative;
-    bottom: 5px;
-    left: 30px;
-}
-
 @media only screen and (max-width: 480px)
 {
     header
@@ -426,7 +395,7 @@ input:focus, textarea:focus
     #navDescr li
     {
         display: block;
-        position: relative;
+        
         margin-left: 20px;
     }
     nav li
@@ -502,7 +471,7 @@ input:focus, textarea:focus
     #formLogin
     {
         width: 230px;
-        height: 300px;
+        height: auto;
     }
     
     #provaHack

@@ -39,12 +39,6 @@
                             <textarea name="textbox" id="textbox" ></textarea>
                             <!--<input type="text" name="textbox" id="textbox">-->
                         </div>
-                        
-                        <div class="inputLabel">
-                            <label for="data">Data di nascita</label>
-                            <input name="data" id="data" type="date"/>
-                        </div>
-                        
                         <div class="inputLabel">
                             <label for="psw">Password</label>
                             <input name="psw" id="psw" type="password"/>
@@ -54,9 +48,9 @@
                             <label for="confirmpsw">Conferma Password</label>
                             <input name="confirmpsw" id="confirmpsw" type="password"/>                            
                         </div>   
-                    
                         <button class="submit" type="submit">Aggiorna</button>                 
                     </form>
+                    <a href="Profilo?delete=ok " ><button class="submit" type="submit"></button></a>                 
                 </div>
                 
             </div>

@@ -5,10 +5,16 @@
  */
 package amm.progetto.Servlet;
 
+import amm.progetto.Classi.Post;
 import amm.progetto.Classi.User;
 import amm.progetto.Classi.UserFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +42,14 @@ public class Profilo extends HttpServlet
             session.invalidate();
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
+        }
+        if(request.getParameter("delete")!=null)
+        {
+            User ud=UserFactory.getInstance().getUserId((int)session.getAttribute("loggedUserID"));
+            UserFactory.getInstance().deleteUser(ud);
+            session.invalidate();
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+   
         }
         
         //Se esiste un attributo di sessione loggedIn e questo vale true

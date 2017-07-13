@@ -15,7 +15,7 @@
         <c:set var="page" value="bacheca" scope="request"/>
         <jsp:include page="nav.jsp"/>
         <jsp:include page="ColonnaLateraleSx.jsp"/>
-        <c:set var="dest" value="nomeBacheca" scope="request"/>
+        <c:set var="dest" value="${idBacheca}" scope="request"/>
         <jsp:include page="NuovoPost.jsp"/>
         <div>            
                 <div class="Post">

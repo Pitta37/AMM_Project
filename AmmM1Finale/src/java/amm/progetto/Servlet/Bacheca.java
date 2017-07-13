@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class Bacheca extends HttpServlet {
+public class Bacheca extends HttpServlet 
+{
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException 
@@ -44,9 +45,18 @@ public class Bacheca extends HttpServlet {
                 request.setAttribute("amici", nPersone);
                 List <String> nGruppi=GruppiFactory.getInstance().getGruppiName();
                 request.setAttribute("gruppi", nGruppi);
-                List <Post> posts = PostFactory.getInstance().getPostList(utente);
+                List <Post> posts;
+                int idbacheca = Integer.parseInt(request.getParameter("idBacheca"));
+                if(idbacheca!=(int)session.getAttribute("loggedUserID"))
+                {
+                    User u = UserFactory.getInstance().getUserId(idbacheca);
+                    posts = PostFactory.getInstance().getPostList(u);
+                }
+                else
+                    posts = PostFactory.getInstance().getPostList(utente);
                 request.setAttribute("post", posts);
-                request.getRequestDispatcher("bacheca.jsp").forward(request, response);
+                
+                
                 if(request.getAttribute("newPost").equals("true"))
                 {
                     String msg;
@@ -56,7 +66,7 @@ public class Bacheca extends HttpServlet {
                 }
                 else
                     request.setAttribute("rsp", null);
-                request.getRequestDispatcher("bacheca.jsp").forward(request, response);
+                request.getRequestDispatcher("bacheca.jsp?id="+(Integer)session.getAttribute("idBacheca")).forward(request, response);
             } 
             else 
             {

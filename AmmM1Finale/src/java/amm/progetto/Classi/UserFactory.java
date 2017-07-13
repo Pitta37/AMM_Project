@@ -5,6 +5,11 @@
  */
 package amm.progetto.Classi;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,67 +24,146 @@ public class UserFactory
         return singleton;
     }
     
-    private ArrayList<User> listUser = new ArrayList<User>();
     
-    private UserFactory()
+    private String connectionString;
+    public void setConnectionString(String s)
     {
-        //Creazione utenti
-        User user1 = new User();
-        user1.setId(0);
-        user1.setNome("Mario");
-        user1.setCognome("Rossi");
-        user1.setUsername("marietto");
-        user1.setFrase("Bella giornata");
-        user1.setPassword("12345");
-        user1.setFotoProfilo("Img/icon.jpg");
-        
-        
-        User user2 = new User();
-        user2.setId(1);
-        user2.setNome("Luigi");
-        user2.setCognome("Serra");
-        user2.setUsername("gigietto");
-        user2.setFrase("Brutta giornata");
-        user2.setPassword("beccaccia");
-        user2.setFotoProfilo("Img/icon2.ico");
-        
-        
-        User user3 = new User();
-        user3.setId(2);
-        user3.setNome("Franco");
-        user3.setCognome("Pau");
-        user3.setUsername("paulinho99");
-        user3.setFrase("Ho sete");
-        user3.setPassword("levissimapurissima");
-        user3.setFotoProfilo("Img/icon3.png");
-       
-        
-        listUser.add(user1);
-        listUser.add(user2);
-        listUser.add(user3);
+    	this.connectionString = s;
     }
-    
-    public User getUserId(int id)
+
+    public String getConnectionString()
     {
-        for (User user : this.listUser)
-            if (user.getId() == id)
-                return user;
+    	return this.connectionString;
+    }
+    private ArrayList<User> listUser = new ArrayList<User>();
+   
+    public User getUserId(int id) {
+
+        try 
+        {
+            // path, username, password
+            Connection conn = DriverManager.getConnection(connectionString, "ammdb", "ammdb");
+            
+            String query = 
+                      "select * from utenti "
+                    + "where utente_id = ?";
+            
+            // Prepared Statement
+            PreparedStatement stmt = conn.prepareStatement(query);
+            
+            // Si associano i valori
+            stmt.setInt(1, id);
+            
+            // Esecuzione query
+            ResultSet res = stmt.executeQuery();
+
+            // ciclo sulle righe restituite
+            if (res.next()) {
+                User current = new User();
+                current.setId(res.getInt("utente_id"));
+                current.setNome(res.getString("name"));
+                current.setCognome(res.getString("cognome"));
+                current.setPassword(res.getString("password"));
+                current.setFotoProfilo(res.getString("urlFotoProfilo"));
+
+                stmt.close();
+                conn.close();
+                return current;
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
     
-    public int getIdUserAndPassword(String user, String password)
-    {
-        for(User utente : this.listUser)
-            if(utente.getNome().equals(user) && utente.getPassword().equals(password))
-                return utente.getId();
+     public int getIdUserAndPassword(String user, String password)
+     {
+        try 
+        {
+            // path, username, password
+            Connection conn = DriverManager.getConnection(connectionString, "ammdb", "ammdb");
+            
+            String query = 
+                      "select utente_id from utenti "
+                    + "where name = ? and password = ?";
+            
+            // Prepared Statement
+            PreparedStatement stmt = conn.prepareStatement(query);
+            
+            // Si associano i valori
+            stmt.setString(1, user);
+            stmt.setString(2, password);
+            
+            // Esecuzione query
+            ResultSet res = stmt.executeQuery();
+
+            // ciclo sulle righe restituite
+            if (res.next()) {
+                int id = res.getInt("utente_id");
+
+                stmt.close();
+                conn.close();
+                return id;
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return -1;
     }
     public List<String> getUsersName()
     {
         List<String> elencoNomi = null;
-        for(User user : this.listUser)
-            elencoNomi.add(user.getNome());
-        return elencoNomi;
+        try 
+        {
+            // path, username, password
+            Connection conn = DriverManager.getConnection(connectionString, "ammdb", "ammdb");
+            
+            String query ="select nome from utenti LIMIT 0, 10;";
+            
+            // Prepared Statement
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet res = stmt.executeQuery();
+            // ciclo sulle righe restituite
+            while (res.next()) 
+                elencoNomi.add(res.getString("nome"));
+             
+            stmt.close();
+            conn.close();
+            return elencoNomi;
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    
+    public void deleteUser(User u)
+    {
+         try 
+        {
+            // path, username, password
+            Connection conn = DriverManager.getConnection(connectionString, "ammdb", "ammdb");
+            
+            String query = "DELETE FROM post "
+                    + "join utenti.utente_id=posts.author WHERE author="+ u.getId();
+            // Prepared Statement
+            PreparedStatement stmt = conn.prepareStatement(query);
+            // Esecuzione query
+            ResultSet res = stmt.executeQuery();
+            query = "DELETE FROM utenti WHERE id = "+ u.getId();
+            stmt = conn.prepareStatement(query);
+            // Esecuzione query
+            res = stmt.executeQuery();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+    }
 }

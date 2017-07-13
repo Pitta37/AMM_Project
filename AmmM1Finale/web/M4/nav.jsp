@@ -34,5 +34,11 @@
                 </c:if>>
                 <a href="bacheca.jsp">Bacheca</a>
             </li>
+            <c:if test="${loggedIn=='true'}">
+                <li id="logout">
+                    <a href="Login?logout=1">logout</a>
+             </li>
+            </c:if>
         </ol>
+    
 </nav>  
